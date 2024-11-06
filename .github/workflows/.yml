@@ -1,0 +1,28 @@
+name: Run Python Script Every Hour
+
+on:
+  schedule:
+    # ตั้งเวลาให้รันโค้ดทุกๆ ชั่วโมง (ใช้ cron schedule)
+    - cron: '*/15 * * * *'  # รันทุกๆ ชั่วโมง
+
+jobs:
+  run-python-script:
+    runs-on: ubuntu-latest  # ใช้เซิร์ฟเวอร์ Ubuntu
+
+    steps:
+      - name: Checkout repository content
+        uses: actions/checkout@v2  # ดึงข้อมูล repository ล่าสุดมา
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # ใช้ Python เวอร์ชันที่ต้องการ
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || true
+        # กำหนด dependencies ถ้ามี (เช่นไฟล์ requirements.txt) หรือข้ามขั้นตอนนี้ได้
+
+      - name: Run Python script
+        run: |
+          python your_script.py
